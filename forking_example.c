@@ -8,7 +8,7 @@ int main()
 	// program after this instruction
 	int a[2]={2,3};
        printf("%d %d %d\n",a[0],a[1],a[2]);	
-	//fork(); 
+	fork(); 
 
 	printf("Hello world!\n"); 
 	return 0; 

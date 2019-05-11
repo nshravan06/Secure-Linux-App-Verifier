@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import subprocess as sub
 import shlex
 import os
@@ -5,7 +6,7 @@ import sys
 import re
 
 print("Welcome to Secure Linux Application Verifier!")
-print("Press 1 for vulnerabilty scanning\nPress 2 for securely compile your source c program\n3.CSP extractor")
+print("Press 1 for vulnerabilty scanning\nPress 2 for securely compile your source c program\n3.CSP extractor\n4.Flag Finder for Executable File")
 
 choice=int(input("Enter your choice:"))
 
@@ -23,19 +24,19 @@ elif(choice==2):
             sec_level=int(input())
 
             if(sec_level==1):
-                flag="-fstack-protector-all -O -D_FORTIFY_SOURCE=2 -grecord-gcc-switches -g -O2 "
+                flag="-fstack-protector-all -O -D_FORTIFY_SOURCE=2 -grecord-gcc-switches -g -O2 -frecord-gcc-switches "
                 sub.call(shlex.split(s+flag+path))
                 #print("The source code has been securely compiled successfully!")
 
             elif(sec_level==2):
                 flag='''-Wformat -Wformat-security -Werror  -fstack-protector-all -O -D_GLIBCXX_ASSERTIONS -fasynchronous-unwind-tables
-                 -fexceptions -Werror=implicit-function-declaration -pie -fPIE -grecord-gcc-switches -g -O2 '''
+                 -fexceptions -Werror=implicit-function-declaration -pie -fPIE -grecord-gcc-switches -g -O2 -frecord-gcc-switches '''
                 sub.call(shlex.split(s+flag+path))
                 #print("The source code has been securely compiled successfully!")
 
             elif(sec_level==3):
                 flag = '''-Wformat -Wformat-security -Werror  -fstack-protector-all -O -D_FORTIFY_SOURCE=2 -D_GLIBCXX_ASSERTIONS -fasynchronous-unwind-tables
-                            -fexceptions -Werror=implicit-function-declaration -pie -fPIE -grecord-gcc-switches -g -O2 '''
+                            -fexceptions -Werror=implicit-function-declaration -pie -fPIE -grecord-gcc-switches -g -O2 -frecord-gcc-switches '''
                 sub.call(shlex.split(s+flag+path))
                 #print("The source code has been securely compiled successfully!")
             else:
@@ -52,5 +53,9 @@ elif(choice==3):
         cmd_string=r'''egrep -ho "[[:graph:]]+@[[:graph:]]+" '''
         sub.call([(cmd_string+path_CSP+"*")],shell=True)
 
-
+elif(choice==4):
+    path=input("Enter the path of executable file file:")
+    if(os.path.exists(path)):
+        cmd = "readelf -p .GCC.command.line " + path
+        sub.call(shlex.split(cmd))
     #print("Work in progress")
